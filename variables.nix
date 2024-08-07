@@ -1,12 +1,12 @@
 {
   # User Variables
-  name = "Randi";
-  username = "ranizzwell";
-  email = "RandiBudiPrananda@proton.me";
+  name = "";
+  username = "";
+  email = "";
 
   # System Variables
-  flakePath = "/home/ranizzwell/Coding/ranizzwell-nixos-flake";
-  homePath = "/home/ranizzwell";
+  flakePath = "";
+  homePath = "";
   keyboardLayout = "colemak_dh";
   stateVersion = "24.11";
 }

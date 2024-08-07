@@ -74,7 +74,7 @@ tasks:
         sed -i "s/name = \".*\"/name = \"${NAME}\"/" variables.nix
         sed -i "s/username = \".*\"/username = \"${USERNAME}\"/" variables.nix
         sed -i "s/email = \".*\"/email = \"${EMAIL}\"/" variables.nix
-        sed -i "s|flakePath = \".*\"|flakePath = \"/home/${USERNAME}/Coding/ranizzwell-nixos-flake\"|" variables.nix
+        sed -i "s|flakePath = \".*\"|flakePath = \"/home/${USERNAME}/ranizzwell-nixos-flake\"|" variables.nix
         sed -i "s|homePath = \".*\"|homePath = \"/home/${USERNAME}\"|" variables.nix
 
         echo -e "{{.GREEN}}Variables updated successfully.{{.RESET}}"
