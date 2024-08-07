@@ -1,0 +1,80 @@
+version: '3'
+silent: true
+vars:
+  # ANSI Colors
+  GREEN: \033[32m
+  RED: \033[31m
+  RESET: \033[0m
+tasks:
+  format:
+    desc: Format the code in the flake.
+    cmds:
+      - nix fmt .
+      - echo -e "{{.GREEN}}Code formatted successfully.{{.RESET}}"
+  rebuild:
+    desc: Rebuild the system configuration using the current flake.
+    cmds:
+      - nh os switch . -H X415JAB
+      - echo -e "{{.GREEN}}System configuration rebuilt successfully.{{.RESET}}"
+  update:
+    desc: Update the flake and rebuild the system configuration.
+    cmds:
+      - nh os switch . -H X415JAB -u
+      - echo -e "{{.GREEN}}Flake updated and system configuration rebuilt successfully.{{.RESET}}"
+  variables:
+    desc: Update variables in `variables.nix`.
+    internal: true
+    cmds:
+      - |
+        # Function to prompt user for a valid name
+        prompt_name() {
+          while true; do
+            echo -n "Enter name: "
+            read NAME
+            if [[ "$NAME" =~ ^[a-zA-Z]+$ ]]; then
+              break
+            else
+              echo -e "{{.RED}}Error: Name must contain only letters. Try again.{{.RESET}}"
+            fi
+          done
+        }
+
+        # Function to prompt user for a valid username
+        prompt_username() {
+          while true; do
+            echo -n "Enter username (lowercase): "
+            read USERNAME
+            if [[ "$USERNAME" =~ ^[a-z]+$ ]]; then
+              break
+            else
+              echo -e "{{.RED}}Error: Username must be in lowercase. Try again.{{.RESET}}"
+            fi
+          done
+        }
+
+        # Function to prompt user for a valid email
+        prompt_email() {
+          while true; do
+            echo -n "Enter email: "
+            read EMAIL
+            if [[ "$EMAIL" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$ ]]; then
+              break
+            else
+              echo -e "{{.RED}}Error: Invalid email format. Try again.{{.RESET}}"
+            fi
+          done
+        }
+
+        # Prompt for each variable
+        prompt_name
+        prompt_username
+        prompt_email
+
+        # Update variables.nix with the validated inputs
+        sed -i "s/name = \".*\"/name = \"${NAME}\"/" variables.nix
+        sed -i "s/username = \".*\"/username = \"${USERNAME}\"/" variables.nix
+        sed -i "s/email = \".*\"/email = \"${EMAIL}\"/" variables.nix
+        sed -i "s|flakePath = \".*\"|flakePath = \"/home/${USERNAME}/Coding/ranizzwell-nixos-flake\"|" variables.nix
+        sed -i "s|homePath = \".*\"|homePath = \"/home/${USERNAME}\"|" variables.nix
+
+        echo -e "{{.GREEN}}Variables updated successfully.{{.RESET}}"
